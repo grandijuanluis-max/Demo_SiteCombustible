@@ -940,7 +940,7 @@ if app_page == "🏠 VISIÓN EJECUTIVA":
                                 folium.CircleMarker(
                                     location=[lat, lon],
                                     radius=max(5, min(score * 2.5, 20)), # Un poco más grandes para facilitar click
-                                    popup=folium.Popup(f"<div style='min-width: 260px; max-height: 300px; overflow-y: auto; font-family: sans-serif;'><b>{r['localidad']} ({r['provincia']})</b><br><br>Volumen Zona: <b>{r['vol']:,.0f} L</b><br>Score Riesgo/Centralidad: <b>{score:.1f}</b>{html_clientes}</div>", max_width=350),
+                                    popup=folium.Popup(f"<div style='min-width: 260px; max-height: 300px; overflow-y: auto; font-family: sans-serif;'><b>{r['localidad']} ({r['provincia']})</b><br><br>Volumen Zona: <b>{r['vol']:,.0f} MTS3</b><br>Score Riesgo/Centralidad: <b>{score:.1f}</b>{html_clientes}</div>", max_width=350),
                                     tooltip=f"Ver Clientes en {r['localidad']}",
                                     color=color_mk,
                                     fill=True,
@@ -1168,7 +1168,7 @@ if app_page == "🍩 PODER DE MERCADO":
                 color='subti_comb', 
                 orientation='h', 
                 template="plotly_dark",
-                labels={'proveedor': 'Proveedor', 'volumen': 'Lts', 'subti_comb': 'Combustible'}
+                labels={'proveedor': 'Proveedor', 'volumen': 'MTS3', 'subti_comb': 'Combustible'}
             )
             # Ordenamos: Mayor volumen ARRIBA de todo
             fig_prov_2.update_yaxes(categoryorder='total ascending', gridcolor='rgba(255,255,255,0.15)', tickfont=dict(color='#ffffff', size=12))
@@ -1208,7 +1208,7 @@ if app_page == "🍩 PODER DE MERCADO":
                 names='subti_comb', 
                 hole=0.5,
                 template="plotly_dark",
-                labels={'subti_comb': 'Combustible', 'volumen': 'Lts'},
+                labels={'subti_comb': 'Combustible', 'volumen': 'MTS3'},
                 color_discrete_sequence=px.colors.qualitative.Prism
             )
             fig_pie.update_traces(textinfo='percent+label', pull=[0.05, 0, 0, 0], marker=dict(line=dict(color='#ffffff', width=1)))
@@ -1223,7 +1223,7 @@ if app_page == "🍩 PODER DE MERCADO":
                 fig_bandera = px.bar(
                     ag_bandera, y='bandera', x='volumen', color='subti_comb',
                     orientation='h', template="plotly_dark",
-                    labels={'bandera': 'Marca / Bandera', 'volumen': 'Litros'}
+                    labels={'bandera': 'Marca / Bandera', 'volumen': 'MTS3'}
                 )
                 fig_bandera.update_yaxes(categoryorder='total ascending', gridcolor='rgba(255,255,255,0.15)', tickfont=dict(color='#ffffff', size=12))
                 fig_bandera.update_xaxes(gridcolor='rgba(255,255,255,0.15)', tickfont=dict(color='#ffffff', size=13))
@@ -1277,46 +1277,7 @@ if app_page == "🧠 COPILOTO ESTRATÉGICO":
         if v_actual > 0 or v_anterior > 0:
             if TABLEROS.get("c_vel", True):
                 # ======= EL "VELOCÍMETRO" (GAUGE CHART) =======
-                st.markdown("#### 🏎️ Tacómetro de Velocidad Comercial")
-                c_gauge, c_txt = st.columns([1.5, 1])
-                
-                with c_gauge:
-                    fig_gauge = go.Figure(go.Indicator(
-                        mode = "gauge+number+delta",
-                        value = v_actual,
-                        domain = {'x': [0, 1], 'y': [0, 1]},
-                        title = {'text': f"Litros Vendidos ({periodo_act})", 'font': {'size': 20, 'color': 'white'}},
-                        delta = {'reference': v_anterior, 'valueformat': ',.0f', 'position': "top", 'increasing': {'color': '#22c55e'}, 'decreasing': {'color': '#ef4444'}},
-                        number = {'valueformat': ',.0f', 'font': {'color': 'white'}},
-                        gauge = {
-                            'axis': {'range': [None, max(v_actual, v_anterior) * 1.5], 'tickwidth': 1, 'tickcolor': "white"},
-                            'bar': {'color': "#3b82f6", 'thickness': 0.25},
-                            'bgcolor': "rgba(0,0,0,0)",
-                            'borderwidth': 2,
-                            'bordercolor': "gray",
-                            'steps': [
-                                {'range': [0, v_anterior * 0.8], 'color': 'rgba(239, 68, 68, 0.4)'}, # Zona Roja
-                                {'range': [v_anterior * 0.8, v_anterior * 1.05], 'color': 'rgba(234, 179, 8, 0.4)'}, # Zona Amarilla
-                                {'range': [v_anterior * 1.05, max(v_actual, v_anterior) * 1.5], 'color': 'rgba(34, 197, 94, 0.4)'} # Zona Verde
-                            ],
-                            'threshold': {
-                                'line': {'color': "white", 'width': 4},
-                                'thickness': 0.75,
-                                'value': v_anterior
-                            }
-                        }
-                    ))
-                    fig_gauge.update_layout(height=350, margin=dict(l=20, r=20, t=50, b=20), paper_bgcolor='rgba(15, 23, 42, 0.85)', font={'color': "white"})
-                    st.plotly_chart(fig_gauge, use_container_width=True)
-    
-                with c_txt:
-                    st.info(f"**Interpretación Gerencial:** Mide tu rendimiento en bloque. Hoy estás **{abs(variacion):.2f}%** {'arriba' if variacion >=0 else 'abajo'} respecto a idéntico período previo ({txt_ref}).")
-                    if variacion > 5:
-                        st.success("🚀 **Motor a tope:** El sector está ganando inercia con fuerza. ¡Asegurar stock suficiente!")
-                    elif variacion >= -5:
-                        st.warning("⚖️ **Velocidad Crucero:** Manteniendo inercia de distribución estable.")
-                    else:
-                        st.error("📉 **Alerta Desaceleración:** Caída prolongada de litros en las Mangueras. Sugerencia de inyectar crédito o promociones.")
+
 
         st.markdown("---")
 
@@ -1338,10 +1299,10 @@ if app_page == "🧠 COPILOTO ESTRATÉGICO":
                 
                 # Limpiamos, ordenamos y traducimos los títulos
                 show_df = riesgo_critico[['localidad', 'provincia', 'volumen', 'clientes']].sort_values("volumen", ascending=False)
-                show_df.columns = ["LOCALIDAD", "PROVINCIA", "VOLUMEN (LTS)", "CANTIDAD CLIENTES"]
+                show_df.columns = ["LOCALIDAD", "PROVINCIA", "VOLUMEN (MTS3)", "CANTIDAD CLIENTES"]
                 
                 # Formateamos los números para que no muestre 3826.000000
-                show_df['VOLUMEN (LTS)'] = show_df['VOLUMEN (LTS)'].apply(lambda x: f"{x:,.0f}")
+                show_df['VOLUMEN (MTS3)'] = show_df['VOLUMEN (MTS3)'].apply(lambda x: f"{x:,.0f}")
                 
                 # Estilos exactos
                 sty_df = show_df.style.set_properties(**{
@@ -1440,23 +1401,7 @@ if app_page == "🧠 COPILOTO ESTRATÉGICO":
                     st.download_button("Descargar Excel de Score", btn_scx, "Ranking_Score.xlsx")
 
         st.markdown("---")
-        if TABLEROS.get("c_adn", True):
-            st.subheader("🌲 Radiografía Sectorial (ADN del Cliente)")
-            st.info("🧬 **Análisis de Impacto Productivo:** Este modelo circular mapea de qué industrias exactas depende tu facturación. El círculo central verde oscuro agrupa las áreas macro (ej. AGRO, TRANSPORTE), y al hacer click en él se despliegan los anillos exteriores que contienen los sub-rubros específicos. Te permite identificar instantáneamente el ADN comercial de tu negocio y dónde está apoyado el mayor volumen.")
-            if 'rubro' in dff.columns and 'subrubro' in dff.columns:
-                ag_rubro = dff.groupby(['rubro', 'subrubro']).agg(volumen=("volumen", "sum")).reset_index()
-                # Limpiamos los S/D masivos si nublan el gráfico
-                ag_rubro = ag_rubro[ag_rubro['rubro'] != "S/D"]
-                if not ag_rubro.empty:
-                    fig_sun = px.sunburst(
-                        ag_rubro, path=['rubro', 'subrubro'], values='volumen',
-                        color='volumen', color_continuous_scale='Blues',
-                        template="plotly_dark"
-                    )
-                    fig_sun.update_layout(margin=dict(t=20, l=0, r=0, b=0), height=550, paper_bgcolor='rgba(15, 23, 42, 0.85)', font={'color':'white'})
-                    st.plotly_chart(fig_sun, use_container_width=True)
-                else:
-                    st.warning("No hay suficientes datos sectoriales ('Rubro') etiquetados en este Excel para trazar la Radiografía.")
+
     else:
         st.warning("⚠️ Sin datos para procesar en el Copiloto Estratégico.")
 
@@ -1482,12 +1427,12 @@ if app_page == "📊 ANÁLISIS DE DATOS PUROS":
             ).reset_index()
             
             t1_ui = t1.drop(columns=["domicilio"])
-            t1_ui.columns = ["Provincia", "Localidad", "Cliente (Nombre)", "Subtipo Combustible", "Volumen (Lts)", "Ventas Totales ($)"]
+            t1_ui.columns = ["Provincia", "Localidad", "Cliente (Nombre)", "Subtipo Combustible", "Volumen (MTS3)", "Ventas Totales ($)"]
             st.dataframe(
                 t1_ui, 
                 use_container_width=True,
                 column_config={
-                    "Volumen (Lts)": st.column_config.NumberColumn(format="%.2f"),
+                    "Volumen (MTS3)": st.column_config.NumberColumn(format="%.2f"),
                     "Ventas Totales ($)": st.column_config.NumberColumn(format="%.2f")
                 }
             )
@@ -1495,7 +1440,7 @@ if app_page == "📊 ANÁLISIS DE DATOS PUROS":
             t1_exp = t1.rename(columns={
                 "provincia": "Provincia", "localidad": "Localidad", "domicilio": "Domicilio",
                 "nombre": "Cliente (Nombre)", "subti_comb": "Subtipo Combustible",
-                "volumen": "Volumen (Lts)", "ventas": "Ventas Totales ($)"
+                "volumen": "Volumen (MTS3)", "ventas": "Ventas Totales ($)"
             })
             
             col_dp1, _ = st.columns([1, 2])
@@ -1537,12 +1482,12 @@ if app_page == "📊 ANÁLISIS DE DATOS PUROS":
             t2 = t2.sort_values(by=['sort_ym'], ascending=True)
             
             t2_ui = t2[["fecha_mes", "provincia", "localidad", "nombre", "subti_comb", "codigo", "detalle", "volumen", "ventas"]]
-            t2_ui.columns = ["Fecha", "Provincia", "Localidad", "Cliente (Nombre)", "Subtipo Combustible", "Código", "Detalle", "Volumen (Lts)", "Ventas Totales ($)"]
+            t2_ui.columns = ["Fecha", "Provincia", "Localidad", "Cliente (Nombre)", "Subtipo Combustible", "Código", "Detalle", "Volumen (MTS3)", "Ventas Totales ($)"]
             st.dataframe(
                 t2_ui, 
                 use_container_width=True,
                 column_config={
-                    "Volumen (Lts)": st.column_config.NumberColumn(format="%.2f"),
+                    "Volumen (MTS3)": st.column_config.NumberColumn(format="%.2f"),
                     "Ventas Totales ($)": st.column_config.NumberColumn(format="%.2f")
                 }
             )
@@ -1550,7 +1495,7 @@ if app_page == "📊 ANÁLISIS DE DATOS PUROS":
             t2_exp = t2[["fecha_mes", "provincia", "localidad", "domicilio", "nombre", "subti_comb", "codigo", "detalle", "volumen", "ventas"]].rename(columns={
                 "fecha_mes": "Fecha", "provincia": "Provincia", "localidad": "Localidad", "domicilio": "Domicilio",
                 "nombre": "Cliente (Nombre)", "subti_comb": "Subtipo Combustible", "codigo": "Código", "detalle": "Detalle",
-                "volumen": "Volumen (Lts)", "ventas": "Ventas Totales ($)"
+                "volumen": "Volumen (MTS3)", "ventas": "Ventas Totales ($)"
             })
             
             col_dp2, _ = st.columns([1, 2])
@@ -1588,12 +1533,12 @@ if app_page == "📊 ANÁLISIS DE DATOS PUROS":
             t3_ag['fecha_corta'] = t3_ag['fecha_dt'].dt.strftime('%d/%m/%Y').fillna("S/D")
     
             t3_ui = t3_ag[["fecha_corta", "provincia", "localidad", "nombre", "subti_comb", "codigo", "detalle", "volumen", "ventas"]]
-            t3_ui.columns = ["Fecha", "Provincia", "Localidad", "Cliente (Nombre)", "Subtipo Combustible", "Código", "Detalle", "Volumen (Lts)", "Ventas Totales ($)"]
+            t3_ui.columns = ["Fecha", "Provincia", "Localidad", "Cliente (Nombre)", "Subtipo Combustible", "Código", "Detalle", "Volumen (MTS3)", "Ventas Totales ($)"]
             st.dataframe(
                 t3_ui, 
                 use_container_width=True,
                 column_config={
-                    "Volumen (Lts)": st.column_config.NumberColumn(format="%.2f"),
+                    "Volumen (MTS3)": st.column_config.NumberColumn(format="%.2f"),
                     "Ventas Totales ($)": st.column_config.NumberColumn(format="%.2f")
                 }
             )
@@ -1601,7 +1546,7 @@ if app_page == "📊 ANÁLISIS DE DATOS PUROS":
             t3_exp = t3_ag[["fecha_corta", "provincia", "localidad", "domicilio", "nombre", "subti_comb", "codigo", "detalle", "volumen", "ventas"]].rename(columns={
                 "fecha_corta": "Fecha", "provincia": "Provincia", "localidad": "Localidad", "domicilio": "Domicilio",
                 "nombre": "Cliente (Nombre)", "subti_comb": "Subtipo Combustible", "codigo": "Código", "detalle": "Detalle",
-                "volumen": "Volumen (Lts)", "ventas": "Ventas Totales ($)"
+                "volumen": "Volumen (MTS3)", "ventas": "Ventas Totales ($)"
             })
     
             col_dp3, _ = st.columns([1, 2])
@@ -2013,12 +1958,9 @@ if app_page == "⚙️ CONFIGURACIÓN":
             m_part = st.toggle("🍩 Participación por Tipo de Producto (Dona)", value=TABLEROS.get("m_part", True))
             m_terr = st.toggle("🚩 Batalla por el Dominio Territorial (Bandera)", value=TABLEROS.get("m_terr", True))
             
-            st.markdown("### 🧠 COPILOTO ESTRATÉGICO")
-            c_vel = st.toggle("🏎️ Tacómetro de Velocidad Comercial", value=TABLEROS.get("c_vel", True))
             c_aler = st.toggle("⚠️ Alertas de Fuga & Concentración", value=TABLEROS.get("c_aler", True))
             c_matriz = st.toggle("💸 Matriz de Exposición Financiera", value=TABLEROS.get("c_matriz", True))
             c_score = st.toggle("🧠 Ranking de Relevancia Estratégica ($Score$)", value=TABLEROS.get("c_score", True))
-            c_adn = st.toggle("🌲 Radiografía Sectorial (ADN del Cliente)", value=TABLEROS.get("c_adn", True))
             
             st.markdown("### 📊 ANÁLISIS DE DATOS PUROS")
             dp_cliente = st.toggle("👥 Resumen por Cliente", value=TABLEROS.get("dp_cliente", True))
