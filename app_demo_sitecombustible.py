@@ -392,48 +392,49 @@ def get_gsheet_client():
 
 from supabase import create_client, Client
 
-@st.cache_data(ttl=300, show_spinner="Cargando Bóveda Base...")
+@st.cache_data(ttl=300, show_spinner="Cargando Datos de Demostración...")
 def load_data():
     try:
-        # En modo DEMO, no bajamos nada. Empezamos en blanco.
-        df = pd.DataFrame()
+        file_path = "VTAS_GLOBALES_sitecombustibleDEMO.xlsx"
+        if os.path.exists(file_path):
+            df = pd.read_excel(file_path, engine='openpyxl')
             
-        df.columns = df.columns.astype(str).str.strip().str.lower()
-        
-        if not df.empty:
-            if 'fecha_dt' in df.columns:
-                df['fecha_dt'] = pd.to_datetime(df['fecha_dt'], errors='coerce')
-            elif 'fecha' in df.columns:
+            df.columns = df.columns.astype(str).str.strip().str.lower()
+            df = df.rename(columns={
+                'importe': 'venta_total', 'total': 'venta_total', 'ventas': 'venta_total',
+                'nnumero': 'numero', 'cantidad': 'volumen', 'ult_provee': 'proveedor', 'cod_bande': 'bandera'
+            })
+            df = df.loc[:, ~df.columns.duplicated()]
+            
+            for c in ['proveedor', 'localidad', 'provincia', 'domicilio', 'formulario', 'numero', 'codigo', 'nombre', 'subti_comb', 'bandera', 'detalle']:
+                if c not in df.columns: df[c] = "S/D"
+
+            for c in ['formulario', 'numero', 'codigo', 'nombre', 'detalle']:
+                if c in df.columns: df[c] = df[c].apply(normalize_id_col)
+
+            if "volumen" in df.columns: df["volumen"] = pd.to_numeric(df["volumen"], errors='coerce').fillna(0)
+            else: df["volumen"] = 0.0
+            if "precio" in df.columns: df["precio"] = pd.to_numeric(df["precio"], errors='coerce').fillna(0)
+            else: df["precio"] = 0.0
+            if "venta_total" in df.columns: df["venta_total"] = pd.to_numeric(df["venta_total"], errors='coerce').fillna(df["precio"] * df["volumen"])
+            else: df["venta_total"] = df["precio"] * df["volumen"]
+            
+            if 'fecha' in df.columns:
                 df['fecha_dt'] = robust_date_parse(df['fecha'])
+                df['anio'] = df['fecha_dt'].dt.year.fillna(0).astype(int)
+                df['mes'] = df['fecha_dt'].dt.month.fillna(0).astype(int).map(MESES_MAP).fillna("S/D")
             else:
                 df['fecha_dt'] = pd.NaT
+                df['anio'] = 0
+                df['mes'] = "S/D"
                 
-            df['anio'] = df['fecha_dt'].dt.year.fillna(0).astype(int)
-            df['mes'] = df['fecha_dt'].dt.month.fillna(0).astype(int).map(MESES_MAP).fillna("S/D")
-            
-            # Asegurar conversiones numéricas
-            for col in ["volumen", "precio", "venta_total"]:
-                if col in df.columns:
-                    df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0.0)
-                else:
-                    df[col] = 0.0
-            
-            # Prevenir colapsos si no vienen las columnas
-            for c in ['proveedor', 'localidad', 'provincia', 'formulario', 'numero', 'codigo', 'nombre', 'subti_comb', 'id_unique', 'bandera', 'detalle']:
-                if c not in df.columns: df[c] = "S/D"
-                else: df[c] = df[c].fillna("S/D")
-                
-            # Identidad robusta ya viene calculada desde ETL, asegurar unicidad
-            if 'id_unique' in df.columns:
-                df = df.drop_duplicates(subset=['id_unique'])
+            df['debug_str'] = df.apply(lambda r: f"{str(r.get('fecha_dt'))[:10]}_{str(r.get('formulario'))}_{str(r.get('numero'))}_{str(r.get('codigo'))}_{str(r.get('nombre'))}", axis=1)
+            df['id_unique'] = df['debug_str'].apply(lambda x: hashlib.md5(x.encode()).hexdigest())
+
+            df = df.drop_duplicates(subset=['id_unique'])
         else:
-            # Asegurar todas las columnas requeridas para evitar KeyErrors
-            df = pd.DataFrame(columns=[
-                'id_unique', 'anio', 'mes', 'precio', 'volumen', 'venta_total', 'numero', 'codigo', 'detalle', 'formulario', 
-                'fecha', 'cliente', 'condicion', 'codigocom', 'nombre', 'localidad', 'provincia', 'canal', 'categoria', 
-                'canal_com', 'cod_activ', 'cod_canal', 'color', 'est_comerc', 'km', 'ramo', 'reventa', 'rubro', 'subrubro', 
-                'tipo_comb', 'subti_comb', 'domicilio', 'c_postal', 'proveedor', 'bandera'
-            ])
+            df = pd.DataFrame()
+            
         return df
     except Exception as e: 
         import traceback
@@ -486,7 +487,7 @@ def check_login():
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = True
         st.session_state.user_perms = {
-            "ingesta": "si", "vision": "si", "inercia": "si",
+            "ingesta": "no", "vision": "si", "inercia": "si",
             "mercado": "si", "copiloto": "si", "vs_mercado": "si",
             "datos": "si", "admin": "no", "can_config": "no"
         }
