@@ -138,7 +138,7 @@ def render_brand_title():
     else:
         logo_html = f"<span style='vertical-align: middle; font-size: 4rem;'>{logo}</span>"
         
-    main_title = f"<h1 style='text-align: center; font-size: 3.5rem; color: #ffffff;'>{logo_html} SiteCombustible {nombre}</h1>"
+    main_title = f"<h1 style='text-align: center; font-size: 3.5rem; color: #ffffff;'>{logo_html} Site Combustible - Demo Local</h1>"
     return main_title
 
 MAIN_TITLE_HTML = render_brand_title()
