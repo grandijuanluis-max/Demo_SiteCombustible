@@ -1274,11 +1274,6 @@ if app_page == "🧠 COPILOTO ESTRATÉGICO":
             
         variacion = ((v_actual - v_anterior) / v_anterior) * 100 if v_anterior > 0 else 0
         
-        if v_actual > 0 or v_anterior > 0:
-            if TABLEROS.get("c_vel", True):
-                # ======= EL "VELOCÍMETRO" (GAUGE CHART) =======
-
-
         st.markdown("---")
 
         # 2. Alertas de Riesgo Hugo Rodano (Concentración Crítica)  [Se calcula siempre para exports/Score]
