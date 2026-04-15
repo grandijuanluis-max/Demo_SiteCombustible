@@ -968,10 +968,14 @@ if app_page == "🏠 VISIÓN EJECUTIVA":
             txt_filtros_grid = f"Fechas: {str_fechas_g} | Prov: {sel_prov or 'Todas'}"
             
             if fmt_grid == "PDF":
+                pass
                 # DEMO LOCK: btn_pdf_grid = generar_pdf_corporativo(grid.head(50), "Reporte Grilla Estratégica", txt_filtros_grid, "Completo")
+                pass
                 # DEMO LOCK: st.download_button("Descargar Reporte PDF", btn_pdf_grid, "Grilla_Estrategica.pdf", "application/pdf")
             else:
+                pass
                 # DEMO LOCK: btn_xl_grid = generar_excel_corporativo(grid, "xlsx")
+                pass
                 # DEMO LOCK: st.download_button("Descargar Archivo XLSX", btn_xl_grid, "Grilla_Estrategica.xlsx")
 
 # --- TAB 2: ANÁLISIS DE INERCIA TEMPORAL (MODIFICACIÓN QUIRÚRGICA) ---
@@ -1069,10 +1073,14 @@ if app_page == "📈 INERCIA TEMPORAL":
             
             if fmt1 == "PDF":
                 # Llamada segura a la función ahora que está definida arriba
+                pass
                 # DEMO LOCK: btn_data = generar_pdf_corporativo(e_vol_total, "Reporte Inercia Total", txt_filtros, mod1)
+                pass
                 # DEMO LOCK: st.download_button("Descargar Reporte PDF", btn_data, "Inercia_Total.pdf", "application/pdf")
             else:
+                pass
                 # DEMO LOCK: btn_xl = generar_excel_corporativo(e_vol_total, fmt1.lower())
+                pass
                 # DEMO LOCK: st.download_button(f"Descargar Archivo {fmt1}", btn_xl, f"Inercia_Total.{fmt1.lower()}")
 
         st.markdown("---")
@@ -1109,10 +1117,14 @@ if app_page == "📈 INERCIA TEMPORAL":
             mod2 = ex4.radio("Contenido", ["Completo", "Solo Datos"], key="m_exp_2", horizontal=True)
             
             if fmt2 == "PDF":
+                pass
                 # DEMO LOCK: btn_data2 = generar_pdf_corporativo(e_sub, "Reporte Tendencia Productos", txt_filtros, mod2)
+                pass
                 # DEMO LOCK: st.download_button("Descargar PDF ", btn_data2, "Tendencia_Productos.pdf", "application/pdf")
             else:
+                pass
                 # DEMO LOCK: btn_xl2 = generar_excel_corporativo(e_sub, fmt2.lower())
+                pass
                 # DEMO LOCK: st.download_button(f"Descargar {fmt2} ", btn_xl2, f"Tendencia_Productos.{fmt2.lower()}")
 
         st.markdown("---")
@@ -1136,10 +1148,14 @@ if app_page == "📈 INERCIA TEMPORAL":
             mod_prov = ex_p2.radio("Contenido", ["Completo", "Solo Datos"], key="m_exp_prov", horizontal=True)
             
             if fmt_prov == "PDF":
+                pass
                 # DEMO LOCK: btn_pdf_prov = generar_pdf_corporativo(r_prov, "Reporte Dominancia por Zona", txt_filtros, mod_prov)
+                pass
                 # DEMO LOCK: st.download_button("Descargar Reporte PDF  ", btn_pdf_prov, "Dominancia_Zona.pdf", "application/pdf")
             else:
+                pass
                 # DEMO LOCK: btn_xl_prov = generar_excel_corporativo(r_prov, fmt_prov.lower())
+                pass
                 # DEMO LOCK: st.download_button(f"Descargar Archivo {fmt_prov}  ", btn_xl_prov, f"Dominancia_Zona.{fmt_prov.lower()}")
     else:
         st.warning("⚠️ No se encontraron despachos registrados para este cruce de fechas y filtros operativos.")
@@ -1186,11 +1202,15 @@ if app_page == "🍩 PODER DE MERCADO":
             mod_t3 = e_col2.radio("Nivel de Detalle", ["Completo", "Solo Datos"], key="mod_t3_p1", horizontal=True)
             
             if fmt_t3 == "PDF":
+                pass
                 # DEMO LOCK: btn_pdf_t3 = generar_pdf_corporativo(prov_mix, "Reporte Mix por Proveedor", txt_filtros_t3, mod_t3)
+                pass
                 # DEMO LOCK: st.download_button("Descargar Reporte PDF ", btn_pdf_t3, "Mix_Proveedores.pdf", "application/pdf")
             else:
                 ext_t3 = fmt_t3.lower()
+                pass
                 # DEMO LOCK: btn_xl_t3 = generar_excel_corporativo(prov_mix, ext_t3)
+                pass
                 # DEMO LOCK: st.download_button(f"Descargar Archivo {fmt_t3} ", btn_xl_t3, f"Mix_Proveedores.{ext_t3}")
 
         st.markdown("---")
@@ -1237,10 +1257,14 @@ if app_page == "🍩 PODER DE MERCADO":
             e_col3, e_col4 = st.columns(2)
             fmt_t3_pie = e_col3.selectbox("Formato de Salida", ["PDF", "XLSX"], key="fmt_t3_p2")
             if fmt_t3_pie == "PDF":
+                pass
                 # DEMO LOCK: btn_pdf_pie = generar_pdf_corporativo(mix_global, "Reporte Mix Global de Productos", txt_filtros_t3, "Completo")
+                pass
                 # DEMO LOCK: st.download_button("Descargar Reporte PDF  ", btn_pdf_pie, "Mix_Global.pdf", "application/pdf")
             else:
+                pass
                 # DEMO LOCK: btn_xl_pie = generar_excel_corporativo(mix_global, "xlsx")
+                pass
                 # DEMO LOCK: st.download_button("Descargar Archivo XLSX  ", btn_xl_pie, "Mix_Global.xlsx")
     else:
         st.warning("⚠️ No hay datos para analizar el Poder de Mercado.")
@@ -1317,10 +1341,14 @@ if app_page == "🧠 COPILOTO ESTRATÉGICO":
                     col_r1, col_r2 = st.columns(2)
                     fmt_r = col_r1.selectbox("Formato", ["PDF", "XLSX"], key="fmt_riesgo_vfinal")
                     if fmt_r == "PDF":
+                        pass
                         # DEMO LOCK: btn_r = generar_pdf_corporativo(riesgo_critico, "Alertas de Riesgo por Concentracion", "Filtros Activos", "Solo Datos")
+                        pass
                         # DEMO LOCK: st.download_button("Descargar Reporte de Riesgos", btn_r, "Alertas_Riesgo.pdf", "application/pdf")
                     else:
+                        pass
                         # DEMO LOCK: btn_rx = generar_excel_corporativo(riesgo_critico, "xlsx")
+                        pass
                         # DEMO LOCK: st.download_button("Descargar Excel de Riesgos", btn_rx, "Alertas_Riesgo.xlsx")
             else:
                 st.success("✅ No se detectan zonas con concentración crítica de clientes en el filtro actual.")
@@ -1390,10 +1418,14 @@ if app_page == "🧠 COPILOTO ESTRATÉGICO":
                 sc1, sc2 = st.columns(2)
                 fmt_sc = sc1.selectbox("Formato ", ["PDF", "XLSX"], key="fmt_score_t4_vfinal")
                 if fmt_sc == "PDF":
+                    pass
                     # DEMO LOCK: btn_sc = generar_pdf_corporativo(top_20, "Ranking Estrategico de Score", "Top 20 Localidades", "Completo")
+                    pass
                     # DEMO LOCK: st.download_button("Descargar Reporte de Score", btn_sc, "Ranking_Score.pdf", "application/pdf")
                 else:
+                    pass
                     # DEMO LOCK: btn_scx = generar_excel_corporativo(top_20, "xlsx")
+                    pass
                     # DEMO LOCK: st.download_button("Descargar Excel de Score", btn_scx, "Ranking_Score.xlsx")
 
         st.markdown("---")
@@ -1445,10 +1477,14 @@ if app_page == "📊 ANÁLISIS DE DATOS PUROS":
                 fmt_dp1 = ed1_1.selectbox("Formato", ["PDF", "XLSX", "XLS"], key="f_dp1")
                 mod_dp1 = ed1_2.radio("Contenido", ["Completo", "Solo Datos"], key="m_dp1", horizontal=True)
                 if fmt_dp1 == "PDF":
+                    pass
                     # DEMO LOCK: btn_dp1 = generar_pdf_corporativo(t1_exp, "Resumen General por Cliente", txt_filtros_dp, mod_dp1)
+                    pass
                     # DEMO LOCK: st.download_button("Descargar Reporte PDF", btn_dp1, "Resumen_Cliente.pdf", "application/pdf")
                 else:
+                    pass
                     # DEMO LOCK: btn_xdp1 = generar_excel_corporativo(t1_exp, fmt_dp1.lower())
+                    pass
                     # DEMO LOCK: st.download_button(f"Descargar Archivo {fmt_dp1}", btn_xdp1, f"Resumen_Cliente.{fmt_dp1.lower()}")
 
         st.markdown("---")
@@ -1500,10 +1536,14 @@ if app_page == "📊 ANÁLISIS DE DATOS PUROS":
                 fmt_dp2 = ed2_1.selectbox("Formato", ["PDF", "XLSX", "XLS"], key="f_dp2")
                 mod_dp2 = ed2_2.radio("Contenido", ["Completo", "Solo Datos"], key="m_dp2", horizontal=True)
                 if fmt_dp2 == "PDF":
+                    pass
                     # DEMO LOCK: btn_dp2 = generar_pdf_corporativo(t2_exp, "Agrupacion Mensual por Cliente", txt_filtros_dp, mod_dp2)
+                    pass
                     # DEMO LOCK: st.download_button("Descargar Reporte PDF ", btn_dp2, "Resumen_Mensual.pdf", "application/pdf")
                 else:
+                    pass
                     # DEMO LOCK: btn_xdp2 = generar_excel_corporativo(t2_exp, fmt_dp2.lower())
+                    pass
                     # DEMO LOCK: st.download_button(f"Descargar Archivo {fmt_dp2} ", btn_xdp2, f"Resumen_Mensual.{fmt_dp2.lower()}")
 
         st.markdown("---")
@@ -1551,10 +1591,14 @@ if app_page == "📊 ANÁLISIS DE DATOS PUROS":
                 fmt_dp3 = ed3_1.selectbox("Formato", ["PDF", "XLSX", "XLS"], key="f_dp3")
                 mod_dp3 = ed3_2.radio("Contenido", ["Completo", "Solo Datos"], key="m_dp3", horizontal=True)
                 if fmt_dp3 == "PDF":
+                    pass
                     # DEMO LOCK: btn_dp3 = generar_pdf_corporativo(t3_exp, "Base Abierta por Fecha", txt_filtros_dp, mod_dp3, orientacion="L")
+                    pass
                     # DEMO LOCK: st.download_button("Descargar Reporte PDF  ", btn_dp3, "Detalle_Abierto.pdf", "application/pdf")
                 else:
+                    pass
                     # DEMO LOCK: btn_xdp3 = generar_excel_corporativo(t3_exp, fmt_dp3.lower())
+                    pass
                     # DEMO LOCK: st.download_button(f"Descargar Archivo {fmt_dp3}  ", btn_xdp3, f"Detalle_Abierto.{fmt_dp3.lower()}")
 
     else:
