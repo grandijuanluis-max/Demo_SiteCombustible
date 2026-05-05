@@ -1,7 +1,7 @@
 import streamlit as st
 from datetime import date
 # --- RESTRICCIÓN DE DEMOSTRACIÓN ---
-VIGENCIA_HASTA = date(2026, 4, 21)
+VIGENCIA_HASTA = date(2026, 5, 8)
 if date.today() > VIGENCIA_HASTA:
     st.info("👋 Esta versión demo caducó. En caso de que quiera actualizar la fecha de caducidad, debe contactarse con su proveedor. ¡Gracias por probar la demo SiteCombustible, que termine bien su día!")
     st.stop()
