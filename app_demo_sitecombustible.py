@@ -408,7 +408,10 @@ def load_data():
             df = df.loc[:, ~df.columns.duplicated()]
             
             for c in ['proveedor', 'localidad', 'provincia', 'domicilio', 'formulario', 'numero', 'codigo', 'nombre', 'subti_comb', 'bandera', 'detalle']:
-                if c not in df.columns: df[c] = "S/D"
+                if c not in df.columns: 
+                    df[c] = "S/D"
+                else:
+                    df[c] = df[c].fillna("S/D")
 
             for c in ['formulario', 'numero', 'codigo', 'nombre', 'detalle']:
                 if c in df.columns: df[c] = df[c].apply(normalize_id_col)
